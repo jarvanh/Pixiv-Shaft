@@ -67,6 +67,33 @@ public class FragmentHistory extends LocalListFragment<FragmentBaseListBinding,
                     Intent intent = new Intent(mContext, UserActivity.class);
                     intent.putExtra(Params.USER_ID, (int) v.getTag());
                     mContext.startActivity(intent);
+                } else if (viewType == 2) {
+                    new QMUIDialog.MessageDialogBuilder(mActivity)
+                            .setTitle(getString(R.string.string_143))
+                            .setMessage(getString(R.string.string_349))
+                            .setSkinManager(QMUISkinManager.defaultInstance(mContext))
+                            .addAction(getString(R.string.string_218), new QMUIDialogAction.ActionListener() {
+                                @Override
+                                public void onClick(QMUIDialog dialog, int index) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .addAction(0, getString(R.string.string_219), QMUIDialogAction.ACTION_PROP_NEGATIVE, new QMUIDialogAction.ActionListener() {
+                                @Override
+                                public void onClick(QMUIDialog dialog, int index) {
+                                    Common.showToast(position);
+                                    AppDatabase.getAppDatabase(mContext)
+                                            .downloadDao()
+                                            .deleteViewHistory(allItems.get(position));
+                                    Common.showToast(getString(R.string.string_220));
+                                    allItems.remove(position);
+                                    mAdapter.notifyItemRemoved(position);
+                                    mAdapter.notifyItemRangeChanged(position, allItems.size() - position);
+                                    dialog.dismiss();
+                                }
+                            })
+                            .create()
+                            .show();
                 }
             }
         });

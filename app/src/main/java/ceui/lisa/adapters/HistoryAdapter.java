@@ -20,6 +20,7 @@ import ceui.lisa.database.IllustHistoryEntity;
 import ceui.lisa.databinding.RecyViewHistoryBinding;
 import ceui.lisa.models.IllustsBean;
 import ceui.lisa.models.NovelBean;
+import ceui.lisa.utils.Common;
 import ceui.lisa.utils.DensityUtil;
 import ceui.lisa.utils.GlideUtil;
 import ceui.lisa.utils.Params;
@@ -27,7 +28,8 @@ import ceui.lisa.utils.Params;
 //浏览历史
 public class HistoryAdapter extends BaseAdapter<IllustHistoryEntity, RecyViewHistoryBinding> {
 
-    private int illustImageSize = 0, novelImageSize = 0;
+    private final int illustImageSize;
+    private final int novelImageSize;
     private SimpleDateFormat mTime = new SimpleDateFormat("MM月dd日 HH: mm");
 
     public HistoryAdapter(List<IllustHistoryEntity> targetList, Context context) {
@@ -57,12 +59,13 @@ public class HistoryAdapter extends BaseAdapter<IllustHistoryEntity, RecyViewHis
                     .into(bindView.baseBind.illustImage);
             bindView.baseBind.title.setText(current.getTitle());
             bindView.baseBind.author.setText("by: " + current.getUser().getName());
-            bindView.baseBind.time.setText(mTime.format(allIllust.get(position).getTime()));
 
             if (current.isGif()) {
+                Common.showLog("gif illust time " + allIllust.get(position).getTime());
                 bindView.baseBind.pSize.setVisibility(View.VISIBLE);
                 bindView.baseBind.pSize.setText("GIF");
             } else {
+                Common.showLog(" illust time " + allIllust.get(position).getTime());
                 if (current.getPage_count() == 1) {
                     bindView.baseBind.pSize.setVisibility(View.GONE);
                 } else {
@@ -91,7 +94,6 @@ public class HistoryAdapter extends BaseAdapter<IllustHistoryEntity, RecyViewHis
                     .into(bindView.baseBind.illustImage);
             bindView.baseBind.title.setText(current.getTitle());
             bindView.baseBind.author.setText("by: " + current.getUser().getName());
-            bindView.baseBind.time.setText(mTime.format(allIllust.get(position).getTime()));
 
             bindView.baseBind.pSize.setVisibility(View.VISIBLE);
             bindView.baseBind.pSize.setText("小说");
@@ -106,9 +108,13 @@ public class HistoryAdapter extends BaseAdapter<IllustHistoryEntity, RecyViewHis
                 });
             }
         }
-
-
-
+        bindView.baseBind.deleteItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOnItemClickListener.onItemClick(v, position, 2);
+            }
+        });
+        bindView.baseBind.time.setText(mTime.format(allIllust.get(position).getTime()));
 
         //从-400 丝滑滑动到0
         ((SpringHolder) bindView).spring.setCurrentValue(-400);

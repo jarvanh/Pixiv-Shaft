@@ -74,7 +74,7 @@ public interface DownloadDao {
      * @param userEntity
      */
     @Delete
-    void delete(IllustHistoryEntity userEntity);
+    void deleteViewHistory(IllustHistoryEntity userEntity);
 
 
     /**

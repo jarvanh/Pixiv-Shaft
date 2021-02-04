@@ -22,6 +22,9 @@ public interface SearchDao {
     @Query("SELECT * FROM search_table ORDER BY searchTime DESC LIMIT :limit")
     List<SearchEntity> getAll(int limit);
 
+    @Delete
+    void deleteSearch(SearchEntity entity);
+
 
     //添加一个屏蔽标签
     @Insert(onConflict = OnConflictStrategy.REPLACE)
