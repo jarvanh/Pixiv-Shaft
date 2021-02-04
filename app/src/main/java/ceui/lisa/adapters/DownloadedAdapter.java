@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import ceui.lisa.R;
 import ceui.lisa.activities.Shaft;
@@ -32,7 +33,9 @@ public class DownloadedAdapter extends BaseAdapter<DownloadEntity, RecyDownloade
 
     private int imageSize;
     private int novelImageSize;
-    private SimpleDateFormat mTime = new SimpleDateFormat("MM月dd日 HH: mm");
+    private SimpleDateFormat mTime = new SimpleDateFormat(
+            mContext.getResources().getString(R.string.string_350),
+            Locale.getDefault());
 
     public DownloadedAdapter(List<DownloadEntity> targetList, Context context) {
         super(targetList, context);
@@ -62,7 +65,7 @@ public class DownloadedAdapter extends BaseAdapter<DownloadEntity, RecyDownloade
                     .placeholder(R.color.light_bg)
                     .into(bindView.baseBind.illustImage);
             bindView.baseBind.title.setText(current.getTitle());
-            bindView.baseBind.author.setText("by: " + current.getUser().getName());
+            bindView.baseBind.author.setText(String.format("by: %s", current.getUser().getName()));
             bindView.baseBind.time.setText(mTime.format(allIllust.get(position).getDownloadTime()));
 
             bindView.baseBind.pSize.setText(R.string.string_171);
@@ -106,14 +109,14 @@ public class DownloadedAdapter extends BaseAdapter<DownloadEntity, RecyDownloade
                 }
             }
             bindView.baseBind.title.setText(allIllust.get(position).getFileName());
-            bindView.baseBind.author.setText("by: " + currentIllust.getUser().getName());
+            bindView.baseBind.author.setText(String.format("by: %s", currentIllust.getUser().getName()));
             bindView.baseBind.time.setText(mTime.format(allIllust.get(position).getDownloadTime()));
 
             if (currentIllust.getPage_count() == 1) {
                 bindView.baseBind.pSize.setVisibility(View.GONE);
             } else {
                 bindView.baseBind.pSize.setVisibility(View.VISIBLE);
-                bindView.baseBind.pSize.setText(currentIllust.getPage_count() + "P");
+                bindView.baseBind.pSize.setText(String.format("%dP", currentIllust.getPage_count()));
             }
 
             if (mOnItemClickListener != null) {
