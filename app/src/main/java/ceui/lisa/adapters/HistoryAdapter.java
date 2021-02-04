@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import ceui.lisa.R;
 import ceui.lisa.activities.Shaft;
@@ -28,7 +29,9 @@ import ceui.lisa.utils.Params;
 public class HistoryAdapter extends BaseAdapter<IllustHistoryEntity, RecyViewHistoryBinding> {
 
     private int illustImageSize = 0, novelImageSize = 0;
-    private SimpleDateFormat mTime = new SimpleDateFormat("MM月dd日 HH: mm");
+    private SimpleDateFormat mTime = new SimpleDateFormat(
+            mContext.getResources().getString(R.string.string_350),
+            Locale.getDefault());
 
     public HistoryAdapter(List<IllustHistoryEntity> targetList, Context context) {
         super(targetList, context);
@@ -56,7 +59,7 @@ public class HistoryAdapter extends BaseAdapter<IllustHistoryEntity, RecyViewHis
                     .placeholder(R.color.light_bg)
                     .into(bindView.baseBind.illustImage);
             bindView.baseBind.title.setText(current.getTitle());
-            bindView.baseBind.author.setText("by: " + current.getUser().getName());
+            bindView.baseBind.author.setText(String.format("by: %s", current.getUser().getName()));
             bindView.baseBind.time.setText(mTime.format(allIllust.get(position).getTime()));
 
             if (current.isGif()) {
@@ -67,7 +70,7 @@ public class HistoryAdapter extends BaseAdapter<IllustHistoryEntity, RecyViewHis
                     bindView.baseBind.pSize.setVisibility(View.GONE);
                 } else {
                     bindView.baseBind.pSize.setVisibility(View.VISIBLE);
-                    bindView.baseBind.pSize.setText(current.getPage_count() + "P");
+                    bindView.baseBind.pSize.setText(String.format("%dP", current.getPage_count()));
                 }
             }
 
@@ -90,7 +93,7 @@ public class HistoryAdapter extends BaseAdapter<IllustHistoryEntity, RecyViewHis
                     .placeholder(R.color.light_bg)
                     .into(bindView.baseBind.illustImage);
             bindView.baseBind.title.setText(current.getTitle());
-            bindView.baseBind.author.setText("by: " + current.getUser().getName());
+            bindView.baseBind.author.setText(String.format("by: %s", current.getUser().getName()));
             bindView.baseBind.time.setText(mTime.format(allIllust.get(position).getTime()));
 
             bindView.baseBind.pSize.setVisibility(View.VISIBLE);
